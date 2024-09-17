@@ -1,5 +1,5 @@
 Importante:
-Este proyecto implementa la librería del proyexto Lombok, tener en cuanta,
+Este proyecto implementa la librería del proyexto Lombok, tener en cuenta,
 
 Descripción general del proyecto:
 
@@ -9,8 +9,9 @@ Spring boot
 Spring Web
 Spring Data JPA
 Spring Security
-
-La librería de auth0 para generar los tokens en conjunto con spring security
+Swagger para crear la documentación del mismo (la paginación aún no soporta el paramentro "sort"):
+http://.../swagger-ui/index.html#/
+La librería de auth0 para generar los tokens en conjunto con spring 
 
 Y usa el conector de MySQL para usar esta base de datos para guardar los datos
 
