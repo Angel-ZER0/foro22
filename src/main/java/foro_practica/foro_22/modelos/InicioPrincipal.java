@@ -40,7 +40,7 @@ public class InicioPrincipal {
 	@ManyToOne
 	private Usuarios idUsuarioPublicacion;
 	private LocalDateTime fecha;
-	@OneToMany (mappedBy = "publicacion", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToMany (mappedBy = "publicacion", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List <RespuestasPublicaciones> respuestas;
 	
 	public InicioPrincipal(NuevaPublicacion nuevaPublicacion, Usuarios usuario) {

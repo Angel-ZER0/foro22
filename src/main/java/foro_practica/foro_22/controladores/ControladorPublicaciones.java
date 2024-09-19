@@ -1,6 +1,8 @@
 package foro_practica.foro_22.controladores;
 
 import java.net.URI;
+
+import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -54,16 +56,17 @@ public class ControladorPublicaciones {
 	}
 	
 	@GetMapping
+	@PageableAsQueryParam 
 	public ResponseEntity<Page<DatosPublicacion>> listarPublicaciones(Pageable paginacion) {
 		return ResponseEntity.ok(repoPublicacion.listarPublicaciones(paginacion).map(DatosPublicacion::new));
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<PublicacionSeleccionada> publicacionPorId(@PathVariable Long id) {
+	public ResponseEntity<DatosPublicacion> publicacionPorId(@PathVariable Long id) {
 		
 		InicioPrincipal publicacion = repoPublicacion.getReferenceById(id);
 		if (publicacion.getEstado() != EstadoPublicacion.OCULTO) {
-			PublicacionSeleccionada publicacionSeleccionada = new PublicacionSeleccionada(publicacion);
+			DatosPublicacion publicacionSeleccionada = new DatosPublicacion(publicacion);
 			return ResponseEntity.ok(publicacionSeleccionada);
 		} else {
 		
