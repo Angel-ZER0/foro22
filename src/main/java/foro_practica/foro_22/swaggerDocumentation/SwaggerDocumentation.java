@@ -16,9 +16,9 @@ public class SwaggerDocumentation {
 		
 		return new OpenAPI()
 				.info(new Info().title("Foro 22"))				
-				.addSecurityItem(new SecurityRequirement().addList("Foro 22 autenticacióna"))
-				.components(new Components().addSecuritySchemes("Foro 22 autenticación", new SecurityScheme()
-						.name("Foro 22 autenticación").type(SecurityScheme.Type.HTTP).scheme("bearer").bearerFormat("JWT")));
+				.addSecurityItem(new SecurityRequirement().addList("Foro22SecurityScheme"))
+				.components(new Components().addSecuritySchemes("Foro22SecurityScheme", new SecurityScheme()
+						.name("Foro22SecurityScheme").type(SecurityScheme.Type.HTTP).scheme("bearer").bearerFormat("JWT")));
 		
 	}
 	
