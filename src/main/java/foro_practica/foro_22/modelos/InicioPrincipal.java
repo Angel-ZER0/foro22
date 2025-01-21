@@ -59,40 +59,31 @@ public class InicioPrincipal {
 		
 	}
 	
-	public void actualizarPublicacionPorId (ActualizarPublicacion actualizarPublicacion, Usuarios usuario) {
+	public void actualizarPublicacionPorId (ActualizarPublicacion actualizarPublicacion) {
 		
-		if (usuario != this.idUsuarioPublicacion || this.estado == EstadoPublicacion.OCULTO) {
-			
-			throw new RuntimeException("Acción no permitida");
-			
-			
-		} else {
-			
-			if (actualizarPublicacion.titulo() != null) {
-				this.titulo = actualizarPublicacion.titulo();
-			}
-			
-			if (actualizarPublicacion.contenido() != null) {
-				this.contenido = actualizarPublicacion.contenido();
-			}
-			
-			if (actualizarPublicacion.estado() != null) {
-				
-				if (actualizarPublicacion.estado() == EstadoPublicacion.CERRADO) {
-					
-					this.estado = EstadoPublicacion.CERRADO;
-					
-				} else {
-					
-					this.estado = EstadoPublicacion.ABIERTO;
-					
-				}
-					
-			}
-			
-			this.fecha = LocalDateTime.now(); 
-			
+		if (actualizarPublicacion.titulo() != null) {
+			this.titulo = actualizarPublicacion.titulo();
 		}
+
+		if (actualizarPublicacion.contenido() != null) {
+			this.contenido = actualizarPublicacion.contenido();
+		}
+
+		if (actualizarPublicacion.estado() != null) {
+
+			if (actualizarPublicacion.estado() == EstadoPublicacion.CERRADO) {
+
+				this.estado = EstadoPublicacion.CERRADO;
+
+			} else {
+
+				this.estado = EstadoPublicacion.ABIERTO;
+
+			}
+
+		}
+
+		this.fecha = LocalDateTime.now();
 		
 	}
 	
@@ -102,9 +93,25 @@ public class InicioPrincipal {
 		
 	}
 	
-	public void reponerPublicacion() {
+	public void abrirPublicacion() {
 		
 		this.estado = EstadoPublicacion.ABIERTO;
 		
 	}
+	
+	public void cerrarPublicacion() {
+		
+		this.estado = EstadoPublicacion.CERRADO;
+		
+	}
+
+	public InicioPrincipal(String contenido, EstadoPublicacion estado, LocalDateTime fecha, 
+			String titulo, Usuarios idUsuarioPublicacion) {
+		this.titulo = titulo;
+		this.contenido = contenido;
+		this.estado = estado;
+		this.idUsuarioPublicacion = idUsuarioPublicacion;
+		this.fecha = fecha;
+	}
+	
 }

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
+import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 
@@ -54,21 +55,25 @@ public class ServicioToken {
 			
 			Algorithm algorithm = Algorithm.HMAC256(fragEncriptador);
 			verificador = JWT.require(algorithm).withIssuer(firma).build().verify(token);
-			verificador.getSubject();
+			String subject = verificador.getSubject();
 			
-		} catch (JWTVerificationException exception) {
+			if (subject == null || subject.trim().isEmpty()) {
 			
-			System.out.println(exception.toString());
+				throw new IllegalStateException("Subject no encontrado en el token");
+				
+			}
+			
+			return subject;
+			
+		} catch (JWTVerificationException ex) {
+			
+			throw new JWTVerificationException(ex.getMessage());
+			
+		} catch (IllegalArgumentException ex) {
+			
+			throw new IllegalStateException(ex.getMessage());
 			
 		}
-		
-		if (verificador.getSubject() == null) {
-			
-			throw new RuntimeException();
-			
-		}
-		
-		return verificador.getSubject();
 		
 	}
 	
@@ -102,6 +107,31 @@ public class ServicioToken {
 		
 	}
 	
+	public boolean validarToken(String token) {
+
+		if (token == null || !token.startsWith("Bearer ")) {
+
+			return false;
+
+		}
+
+		String claveToken = token.substring(7);
+
+		try {
+
+			Algorithm algorithm = Algorithm.HMAC256(fragEncriptador);
+			DecodedJWT verificador = JWT.require(algorithm).withIssuer(firma).build().verify(claveToken);
+			return true;
+
+		} catch (RuntimeException ex) {
+			
+			ex.getMessage();
+			return false;
+			
+		}
+
+	}
+	
 	public String conseguirToken() {
 		
 		if (request.getHeader(HttpHeaders.AUTHORIZATION) == null) {
@@ -110,7 +140,7 @@ public class ServicioToken {
 			
 		} else {
 			
-			return request.getHeader(HttpHeaders.AUTHORIZATION).replace("Bearer ", "");
+			return request.getHeader(HttpHeaders.AUTHORIZATION)/*.replace("Bearer ", "")*/;
 			
 		}
 		

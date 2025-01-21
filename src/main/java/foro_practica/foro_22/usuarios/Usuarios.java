@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import foro_practica.foro_22.modelos.InicioPrincipal;
 import foro_practica.foro_22.modelos.RespuestasPublicaciones;
 import jakarta.persistence.CascadeType;
@@ -39,15 +38,15 @@ public class Usuarios implements UserDetails {
 	private Long id;
 	@Column(length = 255, nullable = false, unique = true)
 	private String nombreUsuario;
-	@Column(length = 511, nullable = false, unique = true)
+	@Column(length = 511, nullable = false)
 	private String contrasena;
-	@Column(length = 255, nullable = false)
+	@Column(length = 255, nullable = false, unique = true)
 	private String correo;
 	@Enumerated(EnumType.STRING)
 	private Roles rol;
-	@OneToMany(mappedBy = "idUsuarioPublicacion", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "idUsuarioPublicacion", cascade = CascadeType.ALL)
 	private List<InicioPrincipal> publicacion;
-	@OneToMany(mappedBy = "idUsuarioRespuesta", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "idUsuarioRespuesta", cascade = CascadeType.ALL)
 	private List<RespuestasPublicaciones> respuestas;
 	
 	@Override
@@ -67,19 +66,37 @@ public class Usuarios implements UserDetails {
 		// TODO Auto-generated method stub
 		return nombreUsuario;
 	}
+
+	public Usuarios(RegistrarUsuario nuevoUsuario, String contrasenaEncriptada, Roles rol) {
+		this.nombreUsuario = nuevoUsuario.nombreUsuario();
+		this.contrasena = contrasenaEncriptada;
+		this.correo = nuevoUsuario.correo();
+		this.rol = rol;
+	}
 	
-	private String encriptarContrasena (String dato) {
+	public void actualizarUsuario (ActualizarUsuario actualizarUsuario, String nuevaContrasena) {
 		
-		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-		return passwordEncoder.encode(dato);
+		if (actualizarUsuario.nombreUsuario() != null) {
+			
+			this.nombreUsuario = actualizarUsuario.nombreUsuario();
+			
+		}
+		
+		if (nuevaContrasena != null) {
+			
+			this.contrasena = nuevaContrasena;
+		
+		}
 		
 	}
 
-	public Usuarios(RegistrarUsuario nuevoUsuario) {
-		this.nombreUsuario = nuevoUsuario.nombreUsuario();
-		this.contrasena = encriptarContrasena(nuevoUsuario.contrasena());
-		this.correo = nuevoUsuario.correo();
-		this.rol = Roles.USER;
+	public Usuarios(String nombreUsuario, String contrasena, String correo, Roles rol) {
+		this.nombreUsuario = nombreUsuario;
+		this.contrasena = contrasena;
+		this.correo = correo;
+		this.rol = rol;
 	}
+	
+	
 	
 }

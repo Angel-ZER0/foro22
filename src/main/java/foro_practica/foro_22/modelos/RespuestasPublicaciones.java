@@ -47,9 +47,24 @@ public class RespuestasPublicaciones {
 	
 	public void editarRespuesta(EditarComentario edicionComentario) {
 		
-		this.respuesta = edicionComentario.respuesta();
-		this.fechaRespuesta =  LocalDateTime.now();
+		if (edicionComentario.respuesta() != null) {
+			
+			this.respuesta = edicionComentario.respuesta();
+			
+		}
+		
+		this.fechaRespuesta = LocalDateTime.now();
 		
 	}
+
+	public RespuestasPublicaciones(String respuesta, InicioPrincipal publicacion, Usuarios idUsuarioRespuesta,
+			LocalDateTime fechaRespuesta) {
+		this.respuesta = respuesta;
+		this.publicacion = publicacion;
+		this.idUsuarioRespuesta = idUsuarioRespuesta;
+		this.fechaRespuesta = fechaRespuesta;
+	}
+	
+	
 	
 }
